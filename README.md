@@ -1,6 +1,8 @@
 
 ## Setup
 
+### Python dependencies
+
 This repository uses [UV](https://astral.sh/blog/uv) as its python dependency management tool. Install UV by:
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -38,4 +40,33 @@ You just need to add `uv` for the pip commands so you run them through uv, which
 will then look something like:
 ```bash
 uv pip install --upgrade pip && uv pip install "unsloth[cu124-ampere-torch250] @ git+https://github.com/unslothai/unsloth.git"
+```
+
+
+### Install llama.cpp
+
+[llama.cp](https://github.com/ggerganov/llama.cpp) is a submodule to this repository. If cloned with `--recursive` flag, you should have llama.cpp directory alreaddy. If not, run `git submodule update --init`. 
+
+Go to the llama.cpp directory and run the following depending on your platform:
+For CUDA enabled devices:
+```bash
+cmake -B build -DGGML_CUDA=ON
+cmake --build build --config Release
+```
+
+On MacOS, Metal is enabled by default. Using Metal makes the computation run on the GPU. To disable the Metal build at compile time use the `-DGGML_METAL=OFF` cmake option.
+
+For unsloth to find the llama.cpp binaries, specially `llama-quantize`, move or copy over the binary for `llama-quantize` to llama.cpp directory root.
+
+Inside the llama.cpp directory, run:
+```bash
+cp build/bin/llama-quantize .
+```
+
+
+### Install ollama
+To install [ollama](https://ollama.com/), run:
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
 ```
