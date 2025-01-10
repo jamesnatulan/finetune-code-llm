@@ -1,6 +1,5 @@
 from unsloth import FastLanguageModel
 
-
 if __name__ == "__main__":
     model, tokenizer = FastLanguageModel.from_pretrained("runs/run5/checkpoint-2000")
     model = FastLanguageModel.for_inference(model)
