@@ -4,9 +4,22 @@ import numpy as np
 import torch
 from torch.utils.data import IterableDataset
 import random
+from tqdm import tqdm
+
+
+def chars_token_ratio(dataset, tokenizer, data_column, nb_examples=400):
+    """
+    Estimate the average number of characters per token in the dataset.
+    """
+
+    total_characters, total_tokens = 0, 0
+    for _, example in tqdm(zip(range(nb_examples), iter(dataset)), total=nb_examples):
+        total_characters += len(example[data_column])
+        total_tokens += len(tokenizer(example[data_column]).tokens())
+
+    return total_characters / total_tokens
 
 # Helper function to get token ids of the special tokens for prefix, suffix and middle for FIM transformations.
-
 @functools.lru_cache(maxsize=None)
 def get_fim_token_ids(tokenizer):
     try:
