@@ -20,6 +20,7 @@ MAX_SEQ_LENGTH = 2048
 DTYPE = None  # Set to None for autodetection. Float16 for Tesla T4, v100, Bfloat16 for Ampere+
 PARAM_SIZE = "0.5"  # Model parameter size
 BASE_OUTPUT_DIR = "runs"
+RESUME_FROM_CHECKPOINT = "runs/run3"
 
 # Training parameters
 MAX_STEPS = 1  # max_steps
@@ -197,10 +198,13 @@ def main():
     
 
     # Setup output dir
-    os.makedirs(BASE_OUTPUT_DIR, exist_ok=True)
-    run_number = len(os.listdir(BASE_OUTPUT_DIR))
-    output_dir = os.path.join(BASE_OUTPUT_DIR, f"run{run_number}")
-    os.makedirs(output_dir, exist_ok=True)
+    if RESUME_FROM_CHECKPOINT:
+        output_dir = RESUME_FROM_CHECKPOINT
+    else:
+        os.makedirs(BASE_OUTPUT_DIR, exist_ok=True)
+        run_number = len(os.listdir(BASE_OUTPUT_DIR))
+        output_dir = os.path.join(BASE_OUTPUT_DIR, f"run{run_number}")
+        os.makedirs(output_dir, exist_ok=True)
 
     # Training arguments
     training_args = TrainingArguments(
@@ -234,7 +238,11 @@ def main():
         max_seq_length=MAX_SEQ_LENGTH,
         args=training_args,
     )
-    trainer.train()
+
+    if RESUME_FROM_CHECKPOINT:
+        trainer.train(resume_from_checkpoint=True)
+    else:
+        trainer.train()
 
     # Export the model and save to ollama
     final_output_dir = os.path.join(output_dir, "final")
