@@ -2,7 +2,7 @@ DATASET = "smangrul/hf-stack-v1"
 DATA_COLUMN = "content"
 MAX_SEQ_LENGTH = 2048
 DTYPE = None  # Set to None for autodetection. Float16 for Tesla T4, v100, Bfloat16 for Ampere+
-PARAM_SIZE = "0.5"  # Model parameter size, can be 0.5, 1.5, 3, 7, 14, 32
+PARAM_SIZE = "1.5"  # Model parameter size, can be 0.5, 1.5, 3, 7, 14, 32
 BASE_OUTPUT_DIR = "runs"
 RESUME_FROM_CHECKPOINT = None # Set this to a checkpoint path to resume training from that checkpoint e.g. runs/run2
 SEED = 42 # Seed for reproducibility
@@ -20,8 +20,8 @@ SAVE_FREQ = 100  # save_freq
 LOG_FREQ = 25 # logging frequence, uses tensorboard logging
 
 # PEFT parameters
-LORA_R = 16
-LORA_ALPHA = 16
+LORA_R = 8
+LORA_ALPHA = 32
 LORA_DROPOUT = 0
 
 # FIM trasformations arguments

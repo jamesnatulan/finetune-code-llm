@@ -70,3 +70,36 @@ To install [ollama](https://ollama.com/), run:
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ```
+
+
+## Training
+
+To run the training script, run:
+```bash
+uv run train.py
+```
+
+The parameters for the training run can be modified in the [settings](settings.py) file. For more information on the parameters, checkout the file itself. It contains useful comments for what each parameter is.
+
+After training, the trained adapter is saved, as well as the merged base and adapter model in gguf format. You can then use this model in ollama for inference. To import the trained model to ollama, run:
+```bash
+ollama create -f <path/to/trained/Modelfile> <your choice of name>
+```
+
+For example, if I do a training run, and have it saved under runs/run4. I will run:
+```bash
+ollama create -f runs/run4/final/Modelfile sample_model
+```
+
+## Inference
+For inference, you can try it out straight using ollama with:
+```bash
+ollama run <your model name>
+```
+
+In the example before, that would be:
+```bash
+ollama run sample_model
+```
+
+Then from here, you can interact with your model directly using ollama's interface or via [OpenAI API](https://github.com/ollama/ollama/blob/main/docs/api.md). For more information, visit [ollama docs.](https://github.com/ollama/ollama/tree/main/docs)
